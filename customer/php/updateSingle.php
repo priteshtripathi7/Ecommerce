@@ -1,66 +1,88 @@
-<?php
+<html>
+  <head>
+    <title>Customer Update</title>
+    <meta charset="utf-8" />
+    <title>Add User</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-if(isset($_POST['submit']))
-{
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/Ecommerce/php/dbh.php";
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    $custid = $_POST['Cust_ID'];
-    $firstname = $_POST['First_name'];
-    $lastname = $_POST['Last_name'];
-    $address = $_POST['Address'];
-    $city = $_POST['City'];
-    $state = $_POST['State'];
-    $phone = $_POST['Phone'];
-    $email = $_POST['Email'];
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+  </body>
+</html>
+    <?php
 
-    $custid = (int)$custid;
-    $phone = (int)$phone;
+    if(isset($_POST['submit']))
+    {
+        include_once $_SERVER['DOCUMENT_ROOT'] . "/Ecommerce/php/dbh.php";
 
-    $sql = "UPDATE customers SET 
-    Cust_ID = $custid,
-    First_name = '$firstname',
-    Last_name = '$lastname',                       
-    Address = '$address',
-    City = '$city',
-    State = '$state',
-    Phone = '$phone',
-    Email = '$email' WHERE Cust_ID = $custid";
+        $custid = $_POST['Cust_ID'];
+        $firstname = $_POST['First_name'];
+        $lastname = $_POST['Last_name'];
+        $address = $_POST['Address'];
+        $city = $_POST['City'];
+        $state = $_POST['State'];
+        $phone = $_POST['Phone'];
+        $email = $_POST['Email'];
 
-    $result = mysqli_query($conn, $sql);
-}
+        $custid = (int)$custid;
+        $phone = (int)$phone;
 
-if(isset($_GET['id']))
-{
-    include_once $_SERVER['DOCUMENT_ROOT'] . "/Ecommerce/php/dbh.php";
-    $id = $_GET['id'];
-    $id = (int)$id;
-    $sql = "SELECT * FROM customers WHERE Cust_ID = $id";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-}
+        $sql = "UPDATE customers SET 
+        Cust_ID = $custid,
+        First_name = '$firstname',
+        Last_name = '$lastname',                       
+        Address = '$address',
+        City = '$city',
+        State = '$state',
+        Phone = '$phone',
+        Email = '$email' WHERE Cust_ID = $custid";
 
-if (isset($_POST['submit']) && $result)
-{
-    echo "User Updated successfully";
-    header("Location: /Ecommerce/customer/php/update.php");
-}
+        $result = mysqli_query($conn, $sql);
+    }
 
-$output = "";
-$output .= "<form method='post'>";
+    if(isset($_GET['id']))
+    {
+        include_once $_SERVER['DOCUMENT_ROOT'] . "/Ecommerce/php/dbh.php";
+        $id = $_GET['id'];
+        $id = (int)$id;
+        $sql = "SELECT * FROM customers WHERE Cust_ID = $id";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+    }
 
-foreach ($row as $key => $value) {
-    //echo $key;
-    $output .="<label for='$key'>".htmlentities($key).": </label>";
-    $temp = htmlentities($key === 'Cust_ID' ? 'readonly' : null);
-    //echo var_dump($temp);
-    $output .="<input type='text' name='$key' value='$value' $temp/>";
-    $output .="<br />"."<br />";
-}
-$output .="<input type='submit' name='submit' value='Submit'>";
-$output .="</form>";
-echo $output;
-?>
+    if (isset($_POST['submit']) && $result)
+    {
+        echo "User Updated successfully";
+        header("Location: /Ecommerce/customer/php/update.php");
+    }
 
-<form action=" /Ecommerce/customer/php/update.php">
-<button type="submit" name="return" onclick=" /Ecommerce/customer/php/update.php">Return</button>
-</form>
+    $output = "";
+    $output .= "<div class='container'><h1 class='display-1'>UPDATE Customer...</h1>
+                <br><form method='post'>";
+
+    foreach ($row as $key => $value) {
+        //echo $key;
+        $output .="<div class='form-group row'><label for='$key' class='col-sm-2 col-form-label'>".htmlentities($key).": </label>";
+        $temp = htmlentities($key === 'Cust_ID' ? 'readonly' : null);
+        //echo var_dump($temp);
+        $output .="<div class='col-sm-10'><input type='text' name='$key' class='form-control' value='$value' $temp/></div>";
+        $output .="</div>";
+    }
+    $output .="<div class='form-group row'><div class='col-sm-10'><input type='submit' name='submit' value='Submit' class='btn btn-primary'></div></div>";
+    $output .="</form>";
+    echo $output;
+    ?>
+
+    <form action=" /Ecommerce/customer/php/update.php">
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" name="return" class="btn btn-primary" onclick=" /Ecommerce/customer/php/update.php">Return</button>
+        </div>
+    </div>
+    </form>
